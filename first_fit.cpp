@@ -3,6 +3,7 @@
 #include "AVLTree.hpp"
 #include <algorithm>
 #include <functional>
+#include <cmath>
 #include <iostream>
 
 using namespace std;
@@ -16,7 +17,7 @@ void first_fit(const vector<double>& items, vector<int>& assignment, vector<doub
     for (int i = 0; i < n; ++i) {
         int j;
         for (j = 0 ; j < bin; ++j) {
-            if (items[i] <= free_space[j]) {
+            if (items[i] < free_space[j] || fabs(items[i] - free_space[j]) < __DBL_EPSILON__) {
                 free_space[j] -= items[i];
                 assignment[i] = j;
                 break;
@@ -48,7 +49,7 @@ void first_fit_d(const vector<item>& items, vector<int>& assignment, vector<doub
     for (int i = 0; i < n; ++i) {
         int j;
         for (j = 0 ; j < bin; ++j) {
-            if (items[i].val <= free_space[j]) {
+            if (items[i].val < free_space[j] || fabs(items[i].val - free_space[j]) < __DBL_EPSILON__) {
                 free_space[j] -= items[i].val;
                 assignment[items[i].id] = j;
                 break;

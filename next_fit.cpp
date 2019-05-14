@@ -1,4 +1,5 @@
 #include "project2.h"
+#include <cmath>
 #include <iostream>
 
 using namespace std;
@@ -11,7 +12,7 @@ void next_fit(const vector<double>& items, vector<int>& assignment, vector<doubl
     double fre = cap;
 
     for (int i = 0; i < n; ++i) {
-        if (items[i] <= fre) {
+        if (items[i] < fre || fabs(items[i] - fre) < __DBL_EPSILON__) {
             assignment[i] = bin;
             fre -= items[i];
         } else {
@@ -21,22 +22,22 @@ void next_fit(const vector<double>& items, vector<int>& assignment, vector<doubl
             fre = cap - items[i];
         }
     }
-    if (fre != cap) {
+    if (fabs(fre - cap) >= __DBL_EPSILON__) { // NOT_EQUAL
         free_space.push_back(fre);
     }
-    // cout << "Number of bins used: " << bin + 1 << endl;
+    // cout << "Number of bins used: " << free_space.size()<< endl;
     // cout << "Assignment: " << endl;
     // for (int j = 0; j < n; ++j) {
     //     cout << assignment[j] << endl;
     // }
     // cout << "Free space of each bin: " << endl;
-    // for (int j = 0; j < bin + 1; ++j) {
+    // for (int j = 0; j < free_space.size(); ++j) {
     //     cout << free_space[j] << endl;
     // }
 }
 
 // int main() {
-//     vector<double> items{0.7, 0.5, 0.3, 0.1, 0.1, 0.6, 0.4, 0.9}; 
+//     vector<double> items{0.5, 0.7, 0.5, 0.2, 0.4, 0.2, 0.5, 0.1, 0.6}; 
 //     vector<int> assignment(items.size(), 0); // same size as items, all values are 0
 //     vector<double> free_space; // empty double vector
 //     next_fit(items, assignment, free_space);
