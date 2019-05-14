@@ -39,7 +39,8 @@ void next_fit(const vector<double>& items, vector<int>& assignment, vector<doubl
 //     vector<double> items{0.7, 0.5, 0.3, 0.1, 0.1, 0.6, 0.4, 0.9}; 
 //     vector<int> assignment(items.size(), 0); // same size as items, all values are 0
 //     vector<double> free_space; // empty double vector
-//     next_fit(items, assignment, free_space); 
+//     next_fit(items, assignment, free_space);
+//     return 0; 
 //     // at this point, 
 //     //      assignment should hold the assignment next_fit makes,
 //     //      free_space should have as many elements as bins created by next_fit,
