@@ -1,20 +1,11 @@
 #include "project2.h"
+#include "item.h"
 #include "AVLTree.hpp"
 #include <algorithm>
 #include <functional>
 #include <iostream>
 
 using namespace std;
-
-struct item {
-    double val;
-    int id;
-};
-
-
-bool comp(item i1, item i2) {
-    return i1.val > i2.val;
-}
 
 // Implementation of first fit algorithm
 void first_fit(const vector<double>& items, vector<int>& assignment, vector<double>& free_space) {
@@ -23,7 +14,6 @@ void first_fit(const vector<double>& items, vector<int>& assignment, vector<doub
     double cap = 1.0;
 
     for (int i = 0; i < n; ++i) {
-        cout << items[i] << endl;
         int j;
         for (j = 0 ; j < bin; ++j) {
             if (items[i] <= free_space[j]) {
@@ -56,7 +46,6 @@ void first_fit_d(const vector<item>& items, vector<int>& assignment, vector<doub
     double cap = 1.0;
 
     for (int i = 0; i < n; ++i) {
-        cout << items[i].val << endl;
         int j;
         for (j = 0 ; j < bin; ++j) {
             if (items[i].val <= free_space[j]) {
