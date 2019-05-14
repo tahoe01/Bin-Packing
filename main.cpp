@@ -16,32 +16,57 @@ struct waste {
     double waste;
 };
 
+void print_vector(const vector<double>& vec) {
+    for (int i = 0; i < vec.size(); ++i) {
+        cout << vec[i] << endl;
+    }
+}
+
+vector<double> get_random_shuffled_double_vector(int n) {
+    vector<double> vec = vector<double>(n);
+    mt19937 mt = get_mersenne_twister_generator_with_current_time_seed();
+    uniform_real_distribution<double> ur(0.0, 1.0); // 0.0 <= x < 1.0
+
+    for (int i = 0; i < n; ++i) {
+        double num = ur(mt);
+        while (num < __DBL_EPSILON__) { // num == 0 => draw again until get a nonzero
+            num = ur(mt);
+        }
+        vec[i] = num;
+    }
+    shuffle_vector(vec);
+    
+    return vec;
+}
+
 // run and time sort for vector with n elements. return vector of timings with sizes and seconds
 waste estimate_waste(int n, int reps, function<void(const vector<double>& items, vector<int>& assignment, vector<double>& free_space)> bin_packing) {
     double total_waste = 0.0;
-    vector<int> rvec;
+    vector<double> items;
 
-    for(int i = 0; i < reps; i++) // For each input size, do "reps" times runs.
-    {
-        vector<double> items; // N items in the vector are floating point numbers between 0 and 1 generated uniformly at random.
+    for(int i = 0; i < reps; i++) { // For each input size, do "reps" times runs. 
+        items = get_random_shuffled_double_vector(n); // N items in the vector are floating point numbers between 0 and 1 generated uniformly at random.
         double min_waste= DBL_MAX;
+
         for (int j = 0; j < 3; j++) { // For each input vector, do 3 runs and take the smallest waste.
             vector<int> assignment(items.size(), 0);
             vector<double> free_space;
+
             bin_packing(items, assignment, free_space);
 
-            double curr_waste = free_space.size() - accumulate(items.begin(), items.end(), 0);
+            double curr_waste = free_space.size() - accumulate(items.begin(), items.end(), 0.0);
             if (curr_waste < min_waste) {
                 min_waste = curr_waste;
             }
         }  
+
         total_waste += min_waste;
     }
 
     waste w;
     w.n = n;
     w.waste = (float)total_waste/reps;  // Average minimum running time of each size
-    
+
     return w;
 }
 
@@ -71,7 +96,7 @@ int main() {
 
     waste w;
 
-    for(int n = 10; n <= 10000; n *= 10)
+    for(int n = 10; n <= 1000; n *= 10)
     {
         w = estimate_waste(n, 3, next_fit);
         add_waste_to_file("next_fit", w, "next_fit.csv");
