@@ -4,25 +4,26 @@ import pandas as pd
 import math
 import scipy.interpolate as ip
 
-def plot_timings_from_file(fname_list):
+def plot_waste_from_file(fname_list):
     for fname in fname_list:
-        timings = pd.read_csv(fname, sep=',')
+        w = pd.read_csv(fname, sep=',')
 
-        n = timings['n'].values
-        seconds = timings['seconds'].values
+        n = w['n'].values
+        waste = w['waste'].values
 
         x = n
-        y = seconds
+        y = waste
         plt.loglog(x=x, y=y, basex=2, basey=2)
         plt.plot(x, y, label=fname.rstrip(".csv"))
 
 
-    plt.xlabel('# of elements')
-    plt.ylabel('time in seconds')
-    plt.title('Performance of sort')
+    plt.xlabel('A: number of items')
+    plt.ylabel('Waste(A)')
+    plt.title('Quality of Bin Packing Algorithms')
     plt.legend()
+    
+    plt.savefig('waste.png', dpi = 100)
     plt.show()
-    # plt.savefig('uniform-shell.png')
     plt.close()
 
-plot_timings_from_file(["bubble.csv", "insertion.csv", "spin.csv", "shell5.csv", "shell3.csv", "annealing2.csv", "annealing6.csv"])
+plot_waste_from_file(["next_fit.csv", "first_fit.csv", "first_fit_decreasing.csv", "best_fit.csv", "best_fit_decreasing.csv"])

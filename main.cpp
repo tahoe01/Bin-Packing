@@ -96,22 +96,21 @@ int main() {
 
     waste w;
 
-    for(int n = 10; n <= 1000; n *= 10)
-    {
+    for(int n = 10; n <= 10000; n *= 10) {
         w = estimate_waste(n, 3, next_fit);
         add_waste_to_file("next_fit", w, "next_fit.csv");
 
-        // w = estimate_waste(n, 3, first_fit);
-        // add_waste_to_file("first_fit", w, "first_fit.csv");
+        w = estimate_waste(n, 3, first_fit);
+        add_waste_to_file("first_fit", w, "first_fit.csv");
 
-        // w = estimate_waste(n, 3, first_fit_decreasing);
-        // add_waste_to_file("first_fit", w, "first_fit_decreasing.csv");
+        w = estimate_waste(n, 3, first_fit_decreasing);
+        add_waste_to_file("first_fit", w, "first_fit_decreasing.csv");
 
-        // w = estimate_waste(n, 3, best_fit);
-        // add_waste_to_file("best_fit", w, "best_fit.csv");
+        w = estimate_waste(n, 3, best_fit);
+        add_waste_to_file("best_fit", w, "best_fit.csv");
 
-        // w = estimate_waste(n, 3, best_fit_decreasing);
-        // add_waste_to_file("best_fit_decreasing", w, "best_fit_decreasing.csv");
+        w = estimate_waste(n, 3, best_fit_decreasing);
+        add_waste_to_file("best_fit_decreasing", w, "best_fit_decreasing.csv");
     }
 
     return 0;

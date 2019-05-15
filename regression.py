@@ -13,30 +13,31 @@ def get_regression_line_coefficients(x, y):
     return np.polyfit(log_array(x), log_array(y), 1)
 
 def linear_regression():
-    def plot_size_vs_times_log_log(fname):
-        timings = pd.read_csv(fname, sep=',')
-        n = timings['n'].values
-        seconds = timings['seconds'].values
+    def plot_size_vs_waste_log_log(fname):
+        w = pd.read_csv(fname, sep=',')
+        n = w['n'].values
+        waste = w['waste'].values
 
         x = n
-        y = seconds
+        y = waste
         plt.loglog(x, y, 's', basex=2, basey=2, label=fname)
 
     def plot_regression_lines(fname): 
-        timings = pd.read_csv(fname, sep=',')
-        n = timings['n'].values
-        seconds = timings['seconds'].values
+        w = pd.read_csv(fname, sep=',')
+        n = w['n'].values
+        waste = w['waste'].values
 
-        m, b = get_regression_line_coefficients(n, seconds)       
+        m, b = get_regression_line_coefficients(n, waste)       
         plt.plot(x, m*x + b, label=f'{fname.rstrip(".csv")}: y ~ {round(m, 2)}x + {round(b, 2)}')
     
-    file_list = ["bubble.csv", "insertion.csv", "spin.csv", "shell5.csv", "shell3.csv", "annealing2.csv", "annealing6.csv"]
+    file_list = ["next_fit.csv", "first_fit.csv", "first_fit_decreasing.csv", "best_fit.csv", "best_fit_decreasing.csv"]
     
     # Plot graph
     plt.subplot(2, 1, 1)
     for fname in file_list:
-        plot_size_vs_times_log_log(fname)
+        plot_size_vs_waste_log_log(fname)
     plt.grid(which='both')
+    plt.title('Regression Analysis of Bin Packing Algorithms')
     plt.legend()
     
     # Linear regression
@@ -49,8 +50,8 @@ def linear_regression():
     plt.xticks(x)
     plt.yticks(np.arange(12))
 
+    plt.savefig('waste-regression.png', dpi = 100)
     plt.show()
-    #plt.savefig('regression.png')
     plt.close()
 
 linear_regression()
