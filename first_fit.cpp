@@ -1,6 +1,5 @@
 #include "project2.h"
 #include "item.h"
-#include "AVLTree.hpp"
 #include <algorithm>
 #include <functional>
 #include <cmath>
