@@ -26,6 +26,10 @@ Given n items with sizes s1, s2, ..., sn such that 0 < si < 1 for 1 ≤ i ≤ n,
 
 There is no known polynomial time algorithm for its solution and it is conjectured that none exists.
 
+Application include:
+
+* 
+
 ### Next Fit (NF)
 
 Loop through the list of items in order. Check to see if the current item can fit into the current bin. If so, assign it to the current bin and update the remaining free capacity of the current bin. Otherwise, record the final free capacity of the current bin, start a new bin, assign the current item to the new bin, and update the free capacity of the new bin.
