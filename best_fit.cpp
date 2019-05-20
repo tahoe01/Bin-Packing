@@ -35,6 +35,11 @@ void best_fit(const vector<double>& items, vector<int>& assignment, vector<doubl
         }
     }
 
+    for (int k = 0; k  < free_space.size(); ++k) {
+        if (fabs(free_space[k]) < __DBL_EPSILON__) {
+            free_space[k] = 0.0;
+        }
+    }
     // cout << "Number of bins used: " << free_space.size() << endl;
     // cout << "Assignment: " << endl;
     // for (int j = 0; j < n; ++j) {
@@ -74,6 +79,11 @@ void best_fit_d(const vector<item>& items, vector<int>& assignment, vector<doubl
         }
     }
 
+    for (int k = 0; k  < free_space.size(); ++k) {
+        if (fabs(free_space[k]) < __DBL_EPSILON__) {
+            free_space[k] = 0.0;
+        }
+    }
     // cout << "Number of bins used: " << free_space.size() << endl;
     // cout << "Assignment: " << endl;
     // for (int j = 0; j < n; ++j) {

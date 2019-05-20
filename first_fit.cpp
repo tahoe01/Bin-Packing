@@ -28,6 +28,12 @@ void first_fit(const vector<double>& items, vector<int>& assignment, vector<doub
             ++bin;
         }
     }
+
+    for (int k = 0; k  < free_space.size(); ++k) {
+        if (fabs(free_space[k]) < __DBL_EPSILON__) {
+            free_space[k] = 0.0;
+        }
+    }
     // cout << "Number of bins used: " << free_space.size() << endl;
     // cout << "Assignment: " << endl;
     // for (int j = 0; j < n; ++j) {
@@ -58,6 +64,12 @@ void first_fit_d(const vector<item>& items, vector<int>& assignment, vector<doub
             free_space.push_back(cap - items[i].val);
             assignment[items[i].id] = bin;
             ++bin;
+        }
+    }
+
+    for (int k = 0; k  < free_space.size(); ++k) {
+        if (fabs(free_space[k]) < __DBL_EPSILON__) {
+            free_space[k] = 0.0;
         }
     }
     // cout << "Number of bins used: " << free_space.size() << endl;
