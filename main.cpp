@@ -48,19 +48,15 @@ waste estimate_waste(int n, int reps, function<void(const vector<double>& items,
         items = get_random_shuffled_double_vector(n); // N items in the vector are floating point numbers between 0 and 1 generated uniformly at random.
         double min_waste= DBL_MAX;
 
-        for (int j = 0; j < 3; j++) { // For each input vector, do 3 runs and take the smallest waste.
-            vector<int> assignment(items.size(), 0);
-            vector<double> free_space;
 
-            bin_packing(items, assignment, free_space);
+        vector<int> assignment(items.size(), 0);
+        vector<double> free_space;
 
-            double curr_waste = free_space.size() - accumulate(items.begin(), items.end(), 0.0);
-            if (curr_waste < min_waste) {
-                min_waste = curr_waste;
-            }
-        }  
+        bin_packing(items, assignment, free_space);
 
-        total_waste += min_waste;
+        double curr_waste = free_space.size() - accumulate(items.begin(), items.end(), 0.0);
+
+        total_waste += curr_waste;
     }
 
     waste w;
