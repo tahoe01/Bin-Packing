@@ -24,13 +24,17 @@ This section first introduces bin packing problems ans then explains the impleme
 
 Given n items with sizes s1, s2, ..., sn such that 0 < si < 1 for 1 ≤ i ≤ n, pack them into the fewest number of bins of capacity 1. It is safe to assume that all items have weight smaller than bin capactiy and larger than 0.
 
+Problem is **NP-hard** (NP-Complete for the decision version). There is no known polynomial time algorithm for its solution, and it is conjectured that none exists.
+
 Applications include:
 
-* Filling recycle bins
+* Loading of containers like trucks.
 
-* Loading trucks
+* Placing data on multiple disks.
 
-* Mix tapes
+* Packing advertisements in fixed length radio/TV station breaks.
+
+* Storing a large collection of music onto tapes/CD’s.
 
 ### Next Fit (NF)
 
@@ -62,9 +66,7 @@ Pseudocode:
 
 ```python
 def first_fit(items, assignment, free_space):
-
     for item in items:
-
         for bin in bins:
             if item <= free space of current bin:
                 assign the item to the current bin
@@ -79,7 +81,7 @@ The inner loop of the above implementation, in the worst case, processes O(N^2) 
 
 ### First Fit Decreasing (FFD)
 
-A problem with the First Fit algorithms is that packing large items is difficult, especially if they occur late in the sequence. The solution is to first sort the items by size, from largest to smallest, then run the First Fit algorithm.
+A problem with the First Fit algorithm is that packing large items is difficult, especially if they occur late in the sequence. The solution is to first sort the items by size, from largest to smallest, then run the First Fit algorithm.
 
 Pseudocode:
 
@@ -103,7 +105,7 @@ Pseudocode:
 def best_fit(items, assignment, free_space):
     for item in items:
         for bin in bins:
-            find the bin where the current item fits the tightest:
+            find the bin where the current item fits the tightest
         if find a bin where the current item fits the tightest:
             assign the item to the bin
             update the free capacity of the bin
@@ -135,23 +137,23 @@ This sections explains how testing is designed, displays the testing results, an
 
 ### Test Goal
 
-The goal of these experiments is to determine an estimate for the waste, W(A), for each of the above bin-packing algorithms, A, as a function of n (number of items), as n grows, where W(A) is defined as follows:
+The goal of these experiments is to determine an estimate for the waste, W(N), for each of the above bin-packing algorithms, as a function of N (number of items), as N grows, where W(N) is defined as follows:
 
-The waste, W(A), of a bin-packing algorithm, A, for any given list of items, is the number of bins used by the algorithm A minus the total size (i.e., the sum) of all the items in the list.
+The waste, W(N), of a bin-packing algorithm, N, for any given list of items, is the number of bins (capacity) used by the algorithm minus the total size (i.e., the sum) of all the items in the list.
 
 ### Test Method
 
-Each bin packing algorithm is tested on lists of items of length n, as n grows from 10 to 100000 (10, 100, 1000, 10000, 100000), where the n items in the lists are floating point numbers between 0 and 1 generated uniformly at random. Each algorithm is defined to operate with bins of size 1.
+Each bin packing algorithm is tested on lists of items of length N, as N grows from 10 to 100000 (10, 100, 1000, 10000, 100000), where the N items in the lists are floating point numbers between 0 and 1 generated uniformly at random. Each algorithm is defined to operate with bins of size 1.
 
 For each length of list of items, generate 5 different random uniformly distributed sequences. For each algorithm, calculate the average waste of algorithm running on the 5 seqeunces.
 
 ### Test Result & Analysis
 
-Result of experiments will be ploted on a **log-log** scale. The y-axis represents **log(waste of bin-packing algorithm)** and the x-axis represents **log(number of items)**. In this case, comparing the slope of the line can find which bin packing algorithm has the smallest waste as n grows to a large number.
+Result of experiments will be ploted on a **log-log** scale. The y-axis represents **log(waste of bin-packing algorithm)** and the x-axis represents **log(number of items)**. In this case, comparing the slope of the line can find which bin packing algorithm has the smallest waste growth.
 
-**Regression analysis** will also be performed on the results of experiments on a **log-log** scale to see if there is a line that fits the data. If so, we can determine the slope of that line, so as to provide experimental evidence for estimating W(A) as a function of n. The function W(A) will also be given.
+**Regression analysis** will also be performed on the results of experiments on a **log-log** scale to see if there is a line that fits the data. If so, we can determine the slope of that line, so as to provide experimental evidence for estimating W(N) as a function of N. The function W(N) will also be given.
 
-1. The graph below shows the waste of different bin packing algorithms as n (number of items) grows on a **log-log** scale.
+1. The graph below shows, on a **log-log** scale, the waste of different bin packing algorithms as N (number of items) grows.
 
     ![waste](./waste.png)
 
@@ -159,14 +161,18 @@ Result of experiments will be ploted on a **log-log** scale. The y-axis represen
 
     ![waste-regression](./waste-regression.png)
 
-Derived from the regression analysis above, we can determine the slope of each algorithm's line and estimate W(A) as function of n, on a log-log scale.
+### Test conclusion
 
-* Next Fit (NF): W(A) = 1.02n - 0.86 (Slope: 1.02)
+Derived from the regression analysis above, we can determine the slope of each algorithm's line and estimate W(N) as function of N, on a log-log scale. W(N) represents log(waste of bin packing algorithm). N represents log(number of items).
 
-* First Fit (FF): W(A) = 0.72n - 0.76 (Slope: 0.72)
+* Next Fit (NF): W(N) = 1.02N - 0.86 (Slope: 1.02)
 
-* First Fit (FFD): W(A) = 0.51n - 0.55 (Slope: 0.51)
+* First Fit (FF): W(N) = 0.72N - 0.76 (Slope: 0.72)
 
-* Best Fit (BF): W(A) = 0.63n - 0.55 (Slope: 0.63)
+* First Fit Decreasing (FFD): W(N) = 0.51N - 0.55 (Slope: 0.51)
 
-* Best Fit Decreasing (BFD): W(A) = 0.53n - 0.64 (Slope: 0.53)
+* Best Fit (BF): W(N) = 0.63N - 0.55 (Slope: 0.63)
+
+* Best Fit Decreasing (BFD): W(N) = 0.53N - 0.64 (Slope: 0.53)
+
+**Since First Fit Decreasing algorithm has the lowest slope, First Fit Decreasing algorithm minimizes the waste growth. By contrast, since Next Fit algorithm has the highest slope, Next Fit algorithm maximizes the waste growth. Best Fit Decreasing algorithm's slope is almost equal to the slope of First Fit Decreasing Algorithm.**

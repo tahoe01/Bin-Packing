@@ -17,8 +17,8 @@ def plot_waste_from_file(fname_list):
         plt.plot(x, y, label=fname.rstrip(".csv"))
 
 
-    plt.xlabel('A: number of items')
-    plt.ylabel('Waste(A)')
+    plt.xlabel('N: number of items')
+    plt.ylabel('Waste(N)')
     plt.title('Quality of Bin Packing Algorithms')
     plt.legend()
     
