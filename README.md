@@ -155,11 +155,11 @@ Result of experiments will be ploted on a **log-log** scale. The y-axis represen
 
 1. The graph below shows, on a **log-log** scale, the waste of different bin packing algorithms as N (number of items) grows.
 
-    ![waste](./waste.png)
+    ![waste](./resource//waste.png)
 
 2. Perform corresponding regression analysis on the waste of different bin packing algorithms. The following graph shows the regression analysis.
 
-    ![waste-regression](./waste-regression.png)
+    ![waste-regression](./resource/waste-regression.png)
 
 ### Test conclusion
 
