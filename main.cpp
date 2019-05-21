@@ -92,7 +92,7 @@ int main() {
 
     waste w;
 
-    for(int n = 10; n <= 10000; n *= 10) {
+    for(int n = 10; n <= 100000; n *= 10) {
         w = estimate_waste(n, 5, next_fit);
         add_waste_to_file("next_fit", w, "next_fit.csv");
 

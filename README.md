@@ -56,41 +56,26 @@ This algorithm processes each item in the list only once so it has time complexi
 
 First fit algorithm has two implementations. The two implementations are different in how to find the first bin that can fit the current item.  The slower version implementation scans the list of bins in order to find the first bin that is large enough to hold the current item. The faster version implementation stores bins in balanced binary search tree ordered by bin index and uses the tree to search for the first bin that is large enough to hold the current item.
 
-1. Slow version:
+Loop through each item in the list in order. Place the new item in the first bin that is large enough to hold it. A new bin is created only when the current item does not fit in any of the bins.
 
-    Loop through each item in the list in order. Place the new item in the first bin that is large enough to hold it. A new bin is created only when the current does not fit in the previous bins.
+Pseudocode:
 
-     code:
+```python
+def first_fit(items, assignment, free_space):
 
-    ```c++
-    void first_fit(const vector<double>& items, vector<int>& assignment, vector<double>& free_space) {
-        int n = items.size();
-        int bin = 0;
-        double cap = 1.0;
+    for item in items:
 
-        for (int i = 0; i < n; ++i) {
-            int j;
-            for (j = 0 ; j < bin; ++j) {
-                if (items[i] < free_space[j] || fabs(items[i] - free_space[j]) < __DBL_EPSILON__) {
-                    free_space[j] -= items[i];
-                    assignment[i] = j;
-                    break;
-                }
-            }
-            if (j == bin) {
-                free_space.push_back(cap - items[i]);
-                assignment[i] = bin;
-                ++bin;
-            }
-        }
-    }
-    ```
+        for bin in bins:
+            if item <= free space of current bin:
+                assign the item to the current bin
+                update the free space of the current bin
+        if no bin can fit the current item:
+            create a new bin
+            assign the item to the new bin
+            update the free space of the new bin
+```
 
-    The inner loop of the above implementation, in the worst case, processes O(N^2) bins since for each item, it scans every previous bins. Overall, it has time complexity O(N^2) and space complexity O(1) since no extra space is used.
-
-2. Fast version:
-
-    TODO: AVL Tree
+The inner loop of the above implementation, in the worst case, processes O(N^2) bins since for each item, it scans every previous bins. Overall, it has time complexity O(N^2) and space complexity O(1) since no extra space is used.
 
 ### First Fit Decreasing (FFD)
 
@@ -108,49 +93,27 @@ This algorithm also has slow and fast implementation, since it is based on the F
 
 ### Best Fit
 
-Best fit algorithm has two implementations. The slower version implementation scans the list of bins in order to find a bin where the item fits the tightest. The faster version implementation stores bins in balanced binary search tree ordered by remaining capacity and uses the tree to search for a bin where the item fits the tightest.
+Best fit algorithm has two implementations. The two implementations are different in how to find the best bin that can fit tightest to the current item. The slower version implementation scans the list of bins in order to find a bin where the item fits the tightest. The faster version implementation stores bins in balanced binary search tree ordered by remaining capacity and uses the tree to search for a bin where the item fits the tightest.
 
-1. Slow version:
+Loop through each item in the list in order. Place the new item in a bin where it fits tightest. It it does not fit in any bin, then start a new bin.
 
-    Loop through each item in the list in order. Place the new item in a bin where it fits tightest. It it does not fit in any bin, then start a new bin.
+Pseudocode:
 
-    C++ code:
+```python
+def best_fit(items, assignment, free_space):
+    for item in items:
+        for bin in bins:
+            find the bin where the current item fits the tightest:
+        if find a bin where the current item fits the tightest:
+            assign the item to the bin
+            update the free capacity of the bin
+        else if no bin can fit the current item:
+            create a new bin
+            assign the current item to the new bin
+            update the free space of the new bin
+```
 
-    ```c++
-    void best_fit(const vector<double>& items, vector<int>& assignment, vector<double>& free_space) {
-        int n = items.size();
-        int bin = 0;
-        double cap = 1.0;
-
-        for (int i = 0; i < n; ++i) {
-            int j;
-            int min_left_bin = -1;
-            double min_left = cap + 1.0;
-
-            for (j = 0; j < bin; ++j) {
-                if ((items[i] < free_space[j] || fabs(items[i] - free_space[j]) < __DBL_EPSILON__) && free_space[j] - items[i] < min_left) {
-                    min_left_bin = j;
-                    min_left = free_space[j] - items[i];
-                }
-            }
-
-            if (min_left_bin == -1) { // Doesn't fit in any bin => start a new bin
-                free_space.push_back(cap - items[i]);
-                assignment[i] = bin;
-                ++bin;
-            } else { // Find a bin where it fits tightest
-                free_space[min_left_bin] -= items[i];
-                assignment[i] = min_left_bin;
-            }
-        }
-    }
-    ```
-
-    The inner loop of the above implementation, in the worst case, processes O(N^2) bins since for each item, it scans every previous bins. Overall, it has time complexity O(N^2) and space complexity O(1) since no extra space is used.
-
-2. Fast version:
-
-    TODO: AVL Tree
+The inner loop of the above implementation, in the worst case, processes O(N^2) bins since for each item, it scans every previous bins. Overall, it has time complexity O(N^2) and space complexity O(1) since no extra space is used.
 
 ### Best Fit Decreasing (BFD)
 
@@ -170,6 +133,40 @@ This algorithm also has slow and fast implementation, since it is based on the B
 
 This sections explains how testing is designed, displays the testing results, and performs analysis of solution quality.
 
+### Test Goal
+
+The goal of these experiments is to determine an estimate for the waste, W(A), for each of the above bin-packing algorithms, A, as a function of n (number of items), as n grows, where W(A) is defined as follows:
+
+The waste, W(A), of a bin-packing algorithm, A, for any given list of items, is the number of bins used by the algorithm A minus the total size (i.e., the sum) of all the items in the list.
+
 ### Test Method
 
+Each bin packing algorithm is tested on lists of items of length n, as n grows from 10 to 100000 (10, 100, 1000, 10000, 100000), where the n items in the lists are floating point numbers between 0 and 1 generated uniformly at random. Each algorithm is defined to operate with bins of size 1.
+
+For each length of list of items, generate 5 different random uniformly distributed sequences. For each algorithm, calculate the average waste of algorithm running on the 5 seqeunces.
+
 ### Test Result & Analysis
+
+Result of experiments will be ploted on a **log-log** scale. The y-axis represents **log(waste of bin-packing algorithm)** and the x-axis represents **log(number of items)**. In this case, comparing the slope of the line can find which bin packing algorithm has the smallest waste as n grows to a large number.
+
+**Regression analysis** will also be performed on the results of experiments on a **log-log** scale to see if there is a line that fits the data. If so, we can determine the slope of that line, so as to provide experimental evidence for estimating W(A) as a function of n. The function W(A) will also be given.
+
+1. The graph below shows the waste of different bin packing algorithms as n (number of items) grows on a **log-log** scale.
+
+    ![waste](./waste.png)
+
+2. Perform corresponding regression analysis on the waste of different bin packing algorithms. The following graph shows the regression analysis.
+
+    ![waste-regression](./waste-regression.png)
+
+Derived from the regression analysis above, we can determine the slope of each algorithm's line and estimate W(A) as function of n, on a log-log scale.
+
+* Next Fit (NF): W(A) = 1.02n - 0.86 (Slope: 1.02)
+
+* First Fit (FF): W(A) = 0.72n - 0.76 (Slope: 0.72)
+
+* First Fit (FFD): W(A) = 0.51n - 0.55 (Slope: 0.51)
+
+* Best Fit (BF): W(A) = 0.63n - 0.55 (Slope: 0.63)
+
+* Best Fit Decreasing (BFD): W(A) = 0.53n - 0.64 (Slope: 0.53)

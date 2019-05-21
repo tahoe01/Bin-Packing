@@ -1,0 +1,6 @@
+funcname,n,waste
+best_fit_decreasing,10,0.719678
+best_fit_decreasing,100,3.05479
+best_fit_decreasing,1000,7.68734
+best_fit_decreasing,10000,36.2972
+best_fit_decreasing,100000,96.4159
