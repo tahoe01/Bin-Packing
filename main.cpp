@@ -61,7 +61,7 @@ waste estimate_waste(int n, int reps, function<void(const vector<double>& items,
 
     waste w;
     w.n = n;
-    w.waste = (float)total_waste/reps;  // Average minimum running time of each size
+    w.waste = (double)total_waste/reps;  // Average minimum running time of each size
 
     return w;
 }
@@ -93,19 +93,19 @@ int main() {
     waste w;
 
     for(int n = 10; n <= 10000; n *= 10) {
-        w = estimate_waste(n, 3, next_fit);
+        w = estimate_waste(n, 5, next_fit);
         add_waste_to_file("next_fit", w, "next_fit.csv");
 
-        w = estimate_waste(n, 3, first_fit);
+        w = estimate_waste(n, 5, first_fit);
         add_waste_to_file("first_fit", w, "first_fit.csv");
 
-        w = estimate_waste(n, 3, first_fit_decreasing);
+        w = estimate_waste(n, 5, first_fit_decreasing);
         add_waste_to_file("first_fit", w, "first_fit_decreasing.csv");
 
-        w = estimate_waste(n, 3, best_fit);
+        w = estimate_waste(n, 5, best_fit);
         add_waste_to_file("best_fit", w, "best_fit.csv");
 
-        w = estimate_waste(n, 3, best_fit_decreasing);
+        w = estimate_waste(n, 5, best_fit_decreasing);
         add_waste_to_file("best_fit_decreasing", w, "best_fit_decreasing.csv");
     }
 

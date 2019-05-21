@@ -18,59 +18,49 @@ Project 2 involves testing various bin packing algorithms experimentally to dete
 
 ## Bin Packing Algorithms
 
-This section first introduces bin packing problems ans then explains the implementation and time/space complexity of five different bin packing algorithms. Pseudocode/C++ code of algorithms will be shown.
+This section first introduces bin packing problems ans then explains the implementation and time/space complexity of five different bin packing algorithms. Pseudocode code of algorithms will be shown.
 
 ### Bin Packing Problem Definition
 
 Given n items with sizes s1, s2, ..., sn such that 0 < si < 1 for 1 ≤ i ≤ n, pack them into the fewest number of bins of capacity 1. It is safe to assume that all items have weight smaller than bin capactiy and larger than 0.
 
-There is no known polynomial time algorithm for its solution and it is conjectured that none exists.
+Applications include:
 
-Application include:
+* Filling recycle bins
 
-* 
+* Loading trucks
+
+* Mix tapes
 
 ### Next Fit (NF)
 
 Loop through the list of items in order. Check to see if the current item can fit into the current bin. If so, assign it to the current bin and update the remaining free capacity of the current bin. Otherwise, record the final free capacity of the current bin, start a new bin, assign the current item to the new bin, and update the free capacity of the new bin.
 
-C++ code:
+Pseudocode code:
 
-```c++
-void next_fit(const vector<double>& items, vector<int>& assignment, vector<double>& free_space) {
-    int n = items.size();
-    int bin = 0;
-    double cap = 1.0;
-    double fre = cap;
-
-    for (int i = 0; i < n; ++i) {
-        if (items[i] < fre || fabs(items[i] - fre) < __DBL_EPSILON__) {
-            assignment[i] = bin;
-            fre -= items[i];
-        } else {
-            ++bin;
-            assignment[i] = bin;
-            free_space.push_back(fre);
-            fre = cap - items[i];
-        }
-    }
-    if (fabs(fre - cap) >= __DBL_EPSILON__) { // NOT_EQUAL
-        free_space.push_back(fre);
-    }
-}
+```python
+def next_fit(items, assignment, free_space):
+    for item in items:
+        if item <= free space of current bin:
+            assign the item to the current bin
+            update the free space of the current bin
+        else:
+            create a new bin
+            assign the item to the new bin
+            update the free space of the current bin
 ```
 
 This algorithm processes each item in the list only once so it has time complexity O(N). As of space complexity, it does not use extra space to store items, so it has O(1) space complexity.
 
 ### First Fit (FF)
 
-First fit algorithm has two implementations. The slower version implementation scans the list of bins in order to find the first bin that is large enough to hold the current item. The faster version implementation stores bins in balanced binary search tree ordered by bin index and uses the tree to search for the first bin that is large enough to hold the current item.
+First fit algorithm has two implementations. The two implementations are different in how to find the first bin that can fit the current item.  The slower version implementation scans the list of bins in order to find the first bin that is large enough to hold the current item. The faster version implementation stores bins in balanced binary search tree ordered by bin index and uses the tree to search for the first bin that is large enough to hold the current item.
 
 1. Slow version:
 
     Loop through each item in the list in order. Place the new item in the first bin that is large enough to hold it. A new bin is created only when the current does not fit in the previous bins.
 
-    C++ code:
+     code:
 
     ```c++
     void first_fit(const vector<double>& items, vector<int>& assignment, vector<double>& free_space) {
